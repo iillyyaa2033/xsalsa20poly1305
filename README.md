@@ -1,10 +1,10 @@
 # XSalsa20Poly1305
 
-[![CircleCI](https://circleci.com/gh/codahale/xsalsa20poly1305.svg?style=svg)](https://circleci.com/gh/codahale/xsalsa20poly1305)
-
 A pure Java library which provides symmetric and asymmetric encryption compatible with DJB's NaCl
 library and its variants (e.g. libsodium). Also includes a class compatible with RbNaCl's SimpleBox
 construction, which automatically manages nonces for you in a misuse-resistant fashion.
+
+This version is Java7-compatible.
 
 ## Add to your project
 
@@ -58,7 +58,7 @@ class Examples {
  
   void symmetricEncryption() {
     // There is a single secret key.
-    final byte[] secretKey = Keys.generateSecretKey();  
+    final byte[] secretKey = Keys.generateSecretKey();
    
     // And you want to use it to store a very secret message.
     final byte[] message = "this is very secret".getBytes(StandardCharsets.UTF_8);

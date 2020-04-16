@@ -18,7 +18,6 @@ package com.codahale.xsalsa20poly1305;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Optional;
 import org.bouncycastle.crypto.digests.Blake2bDigest;
 import org.bouncycastle.crypto.engines.XSalsa20Engine;
 import org.bouncycastle.crypto.macs.Poly1305;
@@ -96,12 +95,11 @@ public class SecretBox {
    *
    * @param nonce a 24-byte nonce
    * @param ciphertext the encrypted message
-   * @return an {@link Optional} of the original plaintext, or if either the key, nonce, or
-   *     ciphertext was modified, an empty {@link Optional}
+   * @return an plaintext, or null if either the key, nonce, or ciphertext was modified
    * @see #nonce(byte[])
    * @see #nonce()
    */
-  public Optional<byte[]> open(byte[] nonce, byte[] ciphertext) {
+  public byte[] open(byte[] nonce, byte[] ciphertext) {
     final XSalsa20Engine xsalsa20 = new XSalsa20Engine();
     final Poly1305 poly1305 = new Poly1305();
 
@@ -126,13 +124,13 @@ public class SecretBox {
 
     // compare macs
     if (!MessageDigest.isEqual(calculatedMAC, presentedMAC)) {
-      return Optional.empty();
+      return null;
     }
 
     // decrypt ciphertext
     final byte[] plaintext = new byte[len];
     xsalsa20.processBytes(ciphertext, poly1305.getMacSize(), plaintext.length, plaintext, 0);
-    return Optional.of(plaintext);
+    return plaintext;
   }
 
   /**

@@ -16,7 +16,6 @@
 package com.codahale.xsalsa20poly1305;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * Convenience functions for encryption without requiring nonce management.
@@ -66,12 +65,11 @@ public class SimpleBox {
    * Decrypt the ciphertext with the given key.
    *
    * @param ciphertext an encrypted message
-   * @return an {@link Optional} of the original plaintext, or if either the key, nonce, or
-   *     ciphertext was modified, an empty {@link Optional}
+   * @return a plaintext, or null if either the key, nonce, or ciphertext was modified
    */
-  public Optional<byte[]> open(byte[] ciphertext) {
+  public byte[] open(byte[] ciphertext) {
     if (ciphertext.length < SecretBox.NONCE_SIZE) {
-      return Optional.empty();
+      return null;
     }
     final byte[] nonce = Arrays.copyOfRange(ciphertext, 0, SecretBox.NONCE_SIZE);
     final byte[] x = Arrays.copyOfRange(ciphertext, SecretBox.NONCE_SIZE, ciphertext.length);
